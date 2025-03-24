@@ -92,13 +92,19 @@ class DesktopLayout extends GetView<HomeController> {
     
     // Calculate sizing based on screen
     final containerHeight = screenHeight * (isMediumScreen ? 0.8 : 0.9);
-    final imageDimension = isMediumScreen ? 300.0 : 400.0;
-    final leftPadding = isMediumScreen ? 50.0 : 100.0;
-    final titleFontSize = isMediumScreen ? 24.0 : 28.0;
-    final nameFontSize = isMediumScreen ? 36.0 : 48.0;
-    final buttonPadding = isMediumScreen 
-        ? const EdgeInsets.symmetric(horizontal: 16, vertical: 8)
-        : const EdgeInsets.symmetric(horizontal: 24, vertical: 12);
+    final imageDimension = isMediumScreen ? 250.0 : 300.0;
+    final leftPadding = isMediumScreen ? 30.0 : 60.0;
+    final titleFontSize = isMediumScreen ? 22.0 : 26.0;
+    final nameFontSize = isMediumScreen ? 32.0 : 40.0;
+    
+    // Adjust button sizes
+    final buttonFontSize = isMediumScreen ? 12.0 : 14.0;
+    final buttonHorizontalPadding = isMediumScreen ? 12.0 : 16.0;
+    final buttonVerticalPadding = isMediumScreen ? 8.0 : 10.0;
+    final buttonPadding = EdgeInsets.symmetric(
+      horizontal: buttonHorizontalPadding, 
+      vertical: buttonVerticalPadding
+    );
     
     return Container(
       height: containerHeight,
@@ -111,7 +117,7 @@ class DesktopLayout extends GetView<HomeController> {
         children: [
           // Left side with text
           Expanded(
-            flex: 1,
+            flex: 5,
             child: Padding(
               padding: EdgeInsets.only(left: leftPadding),
               child: Column(
@@ -132,6 +138,8 @@ class DesktopLayout extends GetView<HomeController> {
                       fontWeight: FontWeight.bold,
                       color: AppTheme.primaryColor,
                     ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                   )),
                   const SizedBox(height: 16),
                   Obx(() => AnimatedTextKit(
@@ -139,14 +147,14 @@ class DesktopLayout extends GetView<HomeController> {
                       TypewriterAnimatedText(
                         controller.profile.value.title,
                         textStyle: TextStyle(
-                          fontSize: isMediumScreen ? 20 : 24,
+                          fontSize: isMediumScreen ? 18 : 22,
                         ),
                         speed: const Duration(milliseconds: 100),
                       ),
                       TypewriterAnimatedText(
                         controller.profile.value.subtitle,
                         textStyle: TextStyle(
-                          fontSize: isMediumScreen ? 20 : 24,
+                          fontSize: isMediumScreen ? 18 : 22,
                         ),
                         speed: const Duration(milliseconds: 100),
                       ),
@@ -154,18 +162,25 @@ class DesktopLayout extends GetView<HomeController> {
                     repeatForever: true,
                   )),
                   const SizedBox(height: 32),
-                  Row(
+                  Wrap(
+                    spacing: 12.0,
+                    runSpacing: 12.0,
                     children: [
                       ElevatedButton(
                         onPressed: () {
                           // Download CV logic
                         },
+                        style: ElevatedButton.styleFrom(
+                          textStyle: TextStyle(
+                            fontSize: buttonFontSize,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
                         child: Padding(
                           padding: buttonPadding,
                           child: const Text('Download CV'),
                         ),
                       ),
-                      const SizedBox(width: 16),
                       OutlinedButton(
                         onPressed: () {
                           // Scroll to contact section
@@ -173,6 +188,10 @@ class DesktopLayout extends GetView<HomeController> {
                         },
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(color: AppTheme.primaryColor),
+                          textStyle: TextStyle(
+                            fontSize: buttonFontSize,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                         child: Padding(
                           padding: buttonPadding,
@@ -188,7 +207,7 @@ class DesktopLayout extends GetView<HomeController> {
           
           // Right side with image
           Expanded(
-            flex: 1,
+            flex: 5,
             child: Center(
               child: Obx(() => Container(
                 height: imageDimension,

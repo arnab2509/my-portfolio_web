@@ -18,8 +18,8 @@ class SkillCard extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenWidth < 600;
-    final isMediumScreen = screenWidth >= 600 && screenWidth < 900;
-    final isLargeScreen = screenWidth >= 1200;
+    final isMediumScreen = screenWidth >= 600 && screenWidth < 1500;
+    final isLargeScreen = screenWidth >= 1500;
     
     // Calculate responsive dimensions
     final padding = isSmallScreen ? 12.0 : (isMediumScreen ? 16.0 : 20.0);
@@ -50,7 +50,7 @@ class SkillCard extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Icon(
-            icon,
+            _getSkillIcon(name),
             size: iconSize,
             color: AppTheme.primaryColor,
           ),
@@ -89,5 +89,30 @@ class SkillCard extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  IconData _getSkillIcon(String skillName) {
+    final lowercaseName = skillName.toLowerCase();
+    
+    if (lowercaseName.contains('flutter')) return Icons.flutter_dash;
+    if (lowercaseName.contains('dart')) return Icons.data_object;
+    if (lowercaseName.contains('firebase')) return Icons.local_fire_department;
+    if (lowercaseName.contains('android')) return Icons.android;
+    if (lowercaseName.contains('ios') || lowercaseName.contains('apple')) return Icons.apple;
+    if (lowercaseName.contains('web')) return Icons.web_asset;
+    if (lowercaseName.contains('javascript') || lowercaseName.contains('js')) return Icons.code;
+    if (lowercaseName.contains('react')) return Icons.code;
+    if (lowercaseName.contains('node')) return Icons.insert_chart;
+    if (lowercaseName.contains('database') || lowercaseName.contains('sql')) return Icons.storage;
+    if (lowercaseName.contains('java')) return Icons.coffee;
+    if (lowercaseName.contains('python')) return Icons.code;
+    if (lowercaseName.contains('design')) return Icons.design_services;
+    if (lowercaseName.contains('ui') || lowercaseName.contains('ux')) return Icons.palette;
+    if (lowercaseName.contains('backend')) return Icons.dns;
+    if (lowercaseName.contains('cloud')) return Icons.cloud;
+    if (lowercaseName.contains('git')) return Icons.merge_type;
+    
+    // Default fallback
+    return Icons.code;
   }
 } 

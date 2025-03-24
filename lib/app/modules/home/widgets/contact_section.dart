@@ -19,12 +19,12 @@ class ContactSection extends StatelessWidget {
     final isLargeScreen = screenWidth >= 1200;
 
     // Calculate responsive padding and spacing
-    final horizontalPadding = isSmallScreen ? 16.0 : (isMediumScreen ? 24.0 : 32.0);
-    final verticalPadding = isSmallScreen ? 32.0 : 48.0;
+    final horizontalPadding = isSmallScreen ? 12.0 : (isMediumScreen ? 20.0 : 28.0);
+    final verticalPadding = isSmallScreen ? 24.0 : 40.0;
     final verticalSpacing = isSmallScreen ? screenHeight * 0.02 : screenHeight * 0.03;
 
     // Calculate responsive text sizes for section title
-    final sectionTitleSize = isSmallScreen ? 24.0 : (isMediumScreen ? 28.0 : (isLargeScreen ? 32.0 : 30.0));
+    final sectionTitleSize = isSmallScreen ? 22.0 : (isMediumScreen ? 26.0 : (isLargeScreen ? 30.0 : 28.0));
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -35,6 +35,7 @@ class ContactSection extends StatelessWidget {
           ? Colors.black87
           : AppTheme.primaryColor.withOpacity(0.05),
       child: Column(
+        mainAxisSize: MainAxisSize.min,
         children: [
           SectionTitle(
             title: 'Contact',
@@ -55,15 +56,29 @@ class ContactSection extends StatelessWidget {
     
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
         _buildContactInfo(controller, true, context),
-        SizedBox(height: screenHeight * 0.04),
+        SizedBox(height: screenHeight * 0.03),
         const ContactForm(),
       ],
     );
   }
 
   Widget _buildDesktopLayout(HomeController controller, bool isMediumScreen, BuildContext context) {
+    // Use wrap for better flexibility on medium-sized screens
+    if (isMediumScreen) {
+      return Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          _buildContactInfo(controller, false, context),
+          SizedBox(height: 20),
+          const ContactForm(),
+        ],
+      );
+    }
+    
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -88,8 +103,8 @@ class ContactSection extends StatelessWidget {
     final isLargeScreen = screenWidth >= 1200;
     
     // Calculate responsive text sizes
-    final headingFontSize = isSmallScreen ? 16.0 : (isMediumScreen ? 18.0 : (isLargeScreen ? 22.0 : 20.0));
-    final contentSpacing = isSmallScreen ? 12.0 : (isMediumScreen ? 16.0 : 20.0);
+    final headingFontSize = isSmallScreen ? 16.0 : (isMediumScreen ? 18.0 : (isLargeScreen ? 20.0 : 18.0));
+    final contentSpacing = isSmallScreen ? 8.0 : (isMediumScreen ? 12.0 : 16.0);
     
     return Obx(
       () => Column(
@@ -126,7 +141,7 @@ class ContactSection extends StatelessWidget {
             isMobile,
             context,
           ),
-          SizedBox(height: screenHeight * 0.03),
+          SizedBox(height: screenHeight * 0.02),
           Text(
             'Connect With Me',
             style: TextStyle(
@@ -139,7 +154,7 @@ class ContactSection extends StatelessWidget {
           SizedBox(height: contentSpacing),
           SocialLinks(
             isFooter: false,
-            iconSize: isSmallScreen ? 24.0 : (isMediumScreen ? 28.0 : (isLargeScreen ? 36.0 : 32.0)),
+            iconSize: isSmallScreen ? 20.0 : (isMediumScreen ? 24.0 : (isLargeScreen ? 28.0 : 24.0)),
           ),
         ],
       ),
@@ -159,12 +174,12 @@ class ContactSection extends StatelessWidget {
     final isMediumScreen = screenWidth >= 600 && screenWidth < 900;
     final isLargeScreen = screenWidth >= 1200;
     
-    // Calculate responsive sizes
-    final iconSize = isSmallScreen ? 20.0 : (isMediumScreen ? 24.0 : (isLargeScreen ? 32.0 : 28.0));
-    final labelFontSize = isSmallScreen ? 12.0 : (isMediumScreen ? 14.0 : (isLargeScreen ? 18.0 : 16.0));
-    final valueFontSize = isSmallScreen ? 14.0 : (isMediumScreen ? 16.0 : (isLargeScreen ? 20.0 : 18.0));
-    final containerPadding = isSmallScreen ? 8.0 : (isMediumScreen ? 10.0 : (isLargeScreen ? 14.0 : 12.0));
-    final itemSpacing = isSmallScreen ? 12.0 : (isMediumScreen ? 16.0 : 20.0);
+    // Calculate responsive sizes - smaller sizes to prevent overflow
+    final iconSize = isSmallScreen ? 18.0 : (isMediumScreen ? 22.0 : (isLargeScreen ? 26.0 : 24.0));
+    final labelFontSize = isSmallScreen ? 10.0 : (isMediumScreen ? 12.0 : (isLargeScreen ? 14.0 : 12.0));
+    final valueFontSize = isSmallScreen ? 12.0 : (isMediumScreen ? 14.0 : (isLargeScreen ? 16.0 : 14.0));
+    final containerPadding = isSmallScreen ? 6.0 : (isMediumScreen ? 8.0 : (isLargeScreen ? 12.0 : 10.0));
+    final itemSpacing = isSmallScreen ? 8.0 : (isMediumScreen ? 12.0 : 16.0);
     
     return InkWell(
       onTap: onTap,
@@ -209,7 +224,7 @@ class ContactSection extends StatelessWidget {
                       color: Colors.grey,
                     ),
                   ),
-                  SizedBox(height: 4),
+                  SizedBox(height: 2),
                   Text(
                     value,
                     style: TextStyle(
@@ -224,10 +239,10 @@ class ContactSection extends StatelessWidget {
             ),
             if (onTap != null) 
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 4.0),
                 child: Icon(
                   Icons.arrow_forward_ios,
-                  size: isSmallScreen ? 14.0 : 16.0,
+                  size: isSmallScreen ? 12.0 : 14.0,
                   color: AppTheme.primaryColor,
                 ),
               ),

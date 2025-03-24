@@ -22,8 +22,20 @@ class ProjectCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
     final isSmallScreen = screenWidth < 600;
     final isMediumScreen = screenWidth >= 600 && screenWidth < 900;
+    
+    // Calculate responsive dimensions
+    final imageHeight = isSmallScreen 
+        ? screenHeight * 0.15 
+        : (isMediumScreen ? screenHeight * 0.18 : screenHeight * 0.22);
+    final padding = isSmallScreen ? 8.0 : (isMediumScreen ? 12.0 : 16.0);
+    final titleFontSize = isSmallScreen ? 14.0 : (isMediumScreen ? 16.0 : 18.0);
+    final descFontSize = isSmallScreen ? 11.0 : (isMediumScreen ? 12.0 : 14.0);
+    final tagFontSize = isSmallScreen ? 9.0 : (isMediumScreen ? 10.0 : 11.0);
+    final spacing = isSmallScreen ? 4.0 : (isMediumScreen ? 6.0 : 8.0);
+    final logoSize = isSmallScreen ? 20.0 : (isMediumScreen ? 24.0 : 28.0);
     
     return InkWell(
       onTap: onTap,
@@ -40,13 +52,14 @@ class ProjectCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          mainAxisSize: MainAxisSize.min, // Take minimum vertical space
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Project Image
             Stack(
               children: [
                 Container(
-                  height: isSmallScreen ? 140 : (isMediumScreen ? 160 : 180),
+                  height: imageHeight,
                   width: double.infinity,
                   decoration: BoxDecoration(
                     borderRadius: const BorderRadius.only(
@@ -61,73 +74,74 @@ class ProjectCard extends StatelessWidget {
                 ),
                 if (logo != null)
                   Positioned(
-                    top: 10,
-                    right: 10,
+                    top: padding,
+                    right: padding,
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(8),
                       child: Container(
-                        padding: const EdgeInsets.all(4),
+                        padding: EdgeInsets.all(padding / 3),
                         color: Colors.white.withOpacity(0.8),
                         child: Image.asset(
                           logo!,
-                          height: isSmallScreen ? 24 : 32,
-                          width: isSmallScreen ? 24 : 32,
+                          height: logoSize,
+                          width: logoSize,
                         ),
                       ),
                     ),
                   ),
               ],
             ),
-            // Project Details
-            Expanded(
-              child: Padding(
-                padding: EdgeInsets.all(isSmallScreen ? 12 : 16),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      title,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontSize: isSmallScreen ? 16 : (isMediumScreen ? 18 : 20),
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
+            // Project Details - Replace Expanded with constrained container
+            Container(
+              padding: EdgeInsets.all(padding),
+              child: Column(
+                mainAxisSize: MainAxisSize.min, // Take minimum vertical space
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      fontSize: titleFontSize,
                     ),
-                    SizedBox(height: isSmallScreen ? 4 : 8),
-                    Text(
-                      description,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: isSmallScreen ? 12 : 14,
-                      ),
-                      maxLines: isSmallScreen ? 2 : 3,
-                      overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: spacing / 2),
+                  Text(
+                    description,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                      fontSize: descFontSize,
                     ),
-                    const Spacer(),
-                    Wrap(
-                      spacing: isSmallScreen ? 4 : 8,
-                      runSpacing: isSmallScreen ? 4 : 8,
-                      children: tags.map((tag) {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: isSmallScreen ? 8 : 12,
-                            vertical: isSmallScreen ? 2 : 4,
+                    maxLines: isSmallScreen ? 2 : 3,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  SizedBox(height: spacing),
+                  Wrap(
+                    spacing: spacing / 2,
+                    runSpacing: spacing / 2,
+                    children: tags.map((tag) {
+                      return Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: padding / 2,
+                          vertical: padding / 4,
+                        ),
+                        decoration: BoxDecoration(
+                          color: AppTheme.primaryColor.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          tag,
+                          style: TextStyle(
+                            color: AppTheme.primaryColor,
+                            fontSize: tagFontSize,
                           ),
-                          decoration: BoxDecoration(
-                            color: AppTheme.primaryColor.withOpacity(0.1),
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            tag,
-                            style: TextStyle(
-                              color: AppTheme.primaryColor,
-                              fontSize: isSmallScreen ? 10 : 12,
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ],
-                ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ],
               ),
             ),
           ],

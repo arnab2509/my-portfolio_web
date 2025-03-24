@@ -13,8 +13,8 @@ class CustomNavigationBar extends GetView<HomeController> {
     final isMediumScreen = screenWidth >= 600 && screenWidth < 900;
     
     // Calculate responsive padding
-    final horizontalPadding = isSmallScreen ? 20.0 : (isMediumScreen ? 50.0 : 100.0);
-    final verticalPadding = isSmallScreen ? 10.0 : 16.0;
+    final horizontalPadding = isSmallScreen ? 12.0 : (isMediumScreen ? 24.0 : 40.0);
+    final verticalPadding = isSmallScreen ? 8.0 : 12.0;
     
     return Container(
       padding: EdgeInsets.symmetric(
@@ -25,7 +25,7 @@ class CustomNavigationBar extends GetView<HomeController> {
       color: Theme.of(context).colorScheme.background,
       child: isSmallScreen
           ? _buildMobileNavBar(context)
-          : _buildDesktopNavBar(context, isMediumScreen),
+          : _buildDesktopNavBar(context, isMediumScreen, screenWidth),
     );
   }
   
@@ -34,13 +34,16 @@ class CustomNavigationBar extends GetView<HomeController> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Logo or Name
-        Obx(() => Text(
-          controller.profile.value.name,
-          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryColor,
-              ),
-        )),
+        Flexible(
+          child: Obx(() => Text(
+            controller.profile.value.name,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primaryColor,
+                ),
+            overflow: TextOverflow.ellipsis,
+          )),
+        ),
         
         // Drawer menu button and theme toggle
         Row(
@@ -49,19 +52,23 @@ class CustomNavigationBar extends GetView<HomeController> {
             IconButton(
               icon: Obx(() => Icon(
                 controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
-                size: 22,
+                size: 20,
               )),
               onPressed: controller.toggleTheme,
               tooltip: 'Toggle Theme',
+              padding: const EdgeInsets.all(8.0),
+              constraints: const BoxConstraints(),
             ),
             
             // Menu Button
             IconButton(
-              icon: const Icon(Icons.menu, size: 24),
+              icon: const Icon(Icons.menu, size: 22),
               onPressed: () {
                 // Show drawer with navigation options
                 Scaffold.of(context).openEndDrawer();
               },
+              padding: const EdgeInsets.all(8.0),
+              constraints: const BoxConstraints(),
             ),
           ],
         ),
@@ -69,45 +76,88 @@ class CustomNavigationBar extends GetView<HomeController> {
     );
   }
   
-  Widget _buildDesktopNavBar(BuildContext context, bool isMediumScreen) {
+  Widget _buildDesktopNavBar(BuildContext context, bool isMediumScreen, double screenWidth) {
     // Calculate font size and spacing based on screen size
-    final double fontSize = isMediumScreen ? 14.0 : 16.0;
-    final double horizontalSpacing = isMediumScreen ? 10.0 : 16.0;
+    final double fontSize = isMediumScreen ? 13.0 : 15.0;
+    final double horizontalSpacing = isMediumScreen ? 6.0 : 10.0;
     
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         // Logo or Name
-        Obx(() => Text(
-          controller.profile.value.name,
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.bold,
-                color: AppTheme.primaryColor,
-                fontSize: isMediumScreen ? 18.0 : 20.0,
-              ),
-        )),
+        Flexible(
+          flex: 1,
+          child: Obx(() => Text(
+            controller.profile.value.name,
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: AppTheme.primaryColor,
+                  fontSize: isMediumScreen ? 16.0 : 18.0,
+                ),
+            overflow: TextOverflow.ellipsis,
+          )),
+        ),
         
-        // Navigation Items
-        Row(
-          children: [
-            _buildNavItem(context, 'Home', "home", fontSize, horizontalSpacing),
-            _buildNavItem(context, 'About', "about", fontSize, horizontalSpacing),
-            _buildNavItem(context, 'Skills', "skills", fontSize, horizontalSpacing),
-            _buildNavItem(context, 'Projects', "projects", fontSize, horizontalSpacing),
-            _buildNavItem(context, 'Education', "education", fontSize, horizontalSpacing),
-            _buildNavItem(context, 'Contact', "contact", fontSize, horizontalSpacing),
-            
-            // Theme Toggle
-            SizedBox(width: horizontalSpacing),
-            IconButton(
-              icon: Obx(() => Icon(
-                controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
-                size: isMediumScreen ? 20 : 24,
-              )),
-              onPressed: controller.toggleTheme,
-              tooltip: 'Toggle Theme',
-            ),
-          ],
+        // Navigation Items in a scrollable container for medium screens
+        Flexible(
+          flex: isMediumScreen ? 3 : 2,
+          child: screenWidth < 800 
+            ? _buildScrollableNavItems(context, fontSize, horizontalSpacing)
+            : _buildRegularNavItems(context, fontSize, horizontalSpacing),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildScrollableNavItems(BuildContext context, double fontSize, double horizontalSpacing) {
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildNavItem(context, 'Home', "home", fontSize, horizontalSpacing),
+          _buildNavItem(context, 'About', "about", fontSize, horizontalSpacing),
+          _buildNavItem(context, 'Skills', "skills", fontSize, horizontalSpacing),
+          _buildNavItem(context, 'Projects', "projects", fontSize, horizontalSpacing),
+          _buildNavItem(context, 'Education', "education", fontSize, horizontalSpacing),
+          _buildNavItem(context, 'Contact', "contact", fontSize, horizontalSpacing),
+          
+          // Theme Toggle
+          SizedBox(width: horizontalSpacing),
+          IconButton(
+            icon: Obx(() => Icon(
+              controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
+              size: 20,
+            )),
+            onPressed: controller.toggleTheme,
+            tooltip: 'Toggle Theme',
+            padding: const EdgeInsets.all(6.0),
+            constraints: const BoxConstraints(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildRegularNavItems(BuildContext context, double fontSize, double horizontalSpacing) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        _buildNavItem(context, 'Home', "home", fontSize, horizontalSpacing),
+        _buildNavItem(context, 'About', "about", fontSize, horizontalSpacing),
+        _buildNavItem(context, 'Skills', "skills", fontSize, horizontalSpacing),
+        _buildNavItem(context, 'Projects', "projects", fontSize, horizontalSpacing),
+        _buildNavItem(context, 'Education', "education", fontSize, horizontalSpacing),
+        _buildNavItem(context, 'Contact', "contact", fontSize, horizontalSpacing),
+        
+        // Theme Toggle
+        SizedBox(width: horizontalSpacing),
+        IconButton(
+          icon: Obx(() => Icon(
+            controller.isDarkMode.value ? Icons.light_mode : Icons.dark_mode,
+            size: 22,
+          )),
+          onPressed: controller.toggleTheme,
+          tooltip: 'Toggle Theme',
         ),
       ],
     );
