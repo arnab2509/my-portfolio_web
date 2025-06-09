@@ -13,8 +13,8 @@ class ProfileProvider {
       name: 'Arnab Mondal',
       title: 'Android App Developer',
       subtitle: 'Web Developer',
-      email: 'arnabmondal2509@gmail.com',
-      phone: '+91 7602791722',
+      email: 'example@gmail.com',
+      phone: '+91 0000000000',
       location: 'Kolkata, India',
       about: '''
 Bachelor of Technology in Computer Science and Engineering from Heritage Institute of Technology, Kolkata.
