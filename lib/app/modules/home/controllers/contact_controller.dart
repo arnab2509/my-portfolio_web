@@ -21,6 +21,7 @@ class ContactController extends GetxController {
       isLoading.value = true;
 
       // Simulate sending email
+      
       await Future.delayed(const Duration(seconds: 2));
 
       isLoading.value = false;

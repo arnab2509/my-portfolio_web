@@ -31,7 +31,7 @@ Recently completed an internship as an Android Developer at Ardent Computech Pvt
           image: 'assets/images/Yumm.jpg',
           logo: 'assets/images/Yumm.jpg',
           technologies: ['Flutter', 'Firebase', 'REST API'],
-          url: 'https://github.com/yourusername/yumm-food-delivery',
+          url: 'https://github.com/arnab2509/yumm',
         ),
         ProjectModel(
           title: 'Scribble Space',
@@ -39,7 +39,7 @@ Recently completed an internship as an Android Developer at Ardent Computech Pvt
           image: 'assets/images/Scribble-Space.png',
           logo: 'assets/images/Scribble-Space.png',
           technologies: ['React', 'Node.js', 'MongoDB'],
-          url: 'https://github.com/yourusername/scribble-space',
+          url: 'https://github.com/arnab2509/Scribble-Space',
         ),
       ],
       skills: [
@@ -97,13 +97,13 @@ Recently completed an internship as an Android Developer at Ardent Computech Pvt
       socialLinks: [
         SocialLinkModel(
           name: 'GitHub',
-          url: 'https://github.com/yourusername',
+          url: 'https://github.com/arnab2509',
           icon: 'code',
           logo: 'assets/images/github-logo.png',
         ),
         SocialLinkModel(
           name: 'LinkedIn',
-          url: 'https://linkedin.com/in/yourusername',
+          url: 'https://www.linkedin.com/in/arnab-mondal-48aa31236/',
           icon: 'business',
           logo: 'assets/images/linkedin logo_icon.png',
         ),

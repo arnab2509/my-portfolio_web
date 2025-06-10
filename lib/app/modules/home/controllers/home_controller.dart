@@ -213,6 +213,8 @@ class HomeController extends GetxController {
   }
 
   void downloadCV() {
+    const cvUrl = 'https://drive.google.com/file/d/1TjluUOJIdn7RWXNz2Z4nzhiwqsrUvQWi/view?usp=sharing';
+    launchURL(cvUrl);
     // Implementation for CV download
   }
 } 

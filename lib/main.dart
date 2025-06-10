@@ -15,7 +15,7 @@ void main() async {
   
   // Ensure old instances are cleared before starting app
   await Get.deleteAll(force: true);
-  
+  // Initialize dotenv to load environment variables
   runApp(const MyApp());
 }
 
@@ -27,9 +27,9 @@ class MyApp extends StatelessWidget {
     return GetMaterialApp(
       title: 'Arnab Mondal - Portfolio',
       debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      darkTheme: AppTheme.darkTheme,
-      themeMode: ThemeMode.light, // Start with light theme by default
+      theme: AppTheme.darkTheme,
+      darkTheme: AppTheme.lightTheme,
+      themeMode: ThemeMode.dark, // Start with light theme by default
       initialRoute: AppPages.INITIAL,
       getPages: AppPages.routes,
       defaultTransition: Transition.fade,
